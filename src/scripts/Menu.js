@@ -21,10 +21,12 @@ export default class Menu extends Phaser.Scene {
     }
 
     startSingle() {
+        this.scene.stop();
         this.scene.start('Level1');
     }
 
     startMulti() {
+        this.scene.stop();
         this.scene.start('Level2');
     }
 }

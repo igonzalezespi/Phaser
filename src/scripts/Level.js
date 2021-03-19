@@ -37,6 +37,10 @@ export default class Level extends Phaser.Scene {
                 this.updateObjects.splice(i, 1);
             }
         }
+
+        if (this.level === 1 && this.ball) { // CPU
+            this.follow(this.ball);
+        }
     }
 
     collide(obj1, obj2, cb) {
@@ -64,7 +68,16 @@ export default class Level extends Phaser.Scene {
         return () => {
             this.addScore(playerNumber);
             this.ball.destroy();
-            setTimeout(() => this.addBall(), 1000);
+            if (this.score[playerNumber - 1] === 3) {
+                this.scene.stop();
+                this.scene.start('GameOver');
+            } else {
+                setTimeout(() => this.addBall(), 1000);
+            }
         };
+    }
+
+    follow(ball) {
+        this.player2.y = ball.y;
     }
 }

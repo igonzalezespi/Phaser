@@ -10,16 +10,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.existing(this);
 
         this.cursor = this.scene.input.keyboard.createCursorKeys();
+        this.cursor.w = scene.input.keyboard.addKey('W');
+        this.cursor.s = scene.input.keyboard.addKey('S');
 
         this.setImmovable(true);
         this.setCollideWorldBounds();
 
         if (playerNumber === 1) {
+            this.up = 'w';
+            this.down = 's';
+        } else {
             this.up = 'up';
             this.down = 'down';
-        } else {
-            this.up = 'left';
-            this.down = 'right';
         }
     }
 
