@@ -1,5 +1,7 @@
 import Boot from './scripts/Boot';
 import Level1 from './scripts/Level1';
+import Level2 from './scripts/Level2';
+import Menu from './scripts/Menu';
 
 // eslint-disable-next-line no-new
 new Phaser.Game({
@@ -18,6 +20,8 @@ new Phaser.Game({
     },
     scene: [
         Boot,
+        Menu,
         Level1,
+        Level2,
     ],
 });
