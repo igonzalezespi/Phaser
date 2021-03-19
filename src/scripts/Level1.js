@@ -6,23 +6,18 @@ export default class Level1 extends Phaser.Scene {
         super({
             key: 'Level1',
         });
-        this.numberOfBalls = 2;
-        this.directions = [1, -1];
     }
 
     create() {
         this.updateObjects = []; // Objetos que tienen un update()
-        this.balls = [];
 
-        this.player = new Player(this, this.cameras.main.width, this.cameras.main.height);
-        for (let i = 0; i < this.numberOfBalls; i++) {
-            this.addBall(null, null, this.directions[i]);
-        }
-        this.updateObjects.push(this.player);
+        this.player1 = new Player(this, this.cameras.main.width, this.cameras.main.height / 2, 1);
+        this.player2 = new Player(this, 20, this.cameras.main.height / 2, 2);
+        this.add.tileSprite(0, 0, this.cameras.main.width * 2, this.cameras.main.height * 2, 'background');
+        this.updateObjects.push(this.player1);
+        this.updateObjects.push(this.player2);
         this.scoreText = this.add.text(10, 10, '', { color: '#ffffff' });
-        this.lifesText = this.add.text(this.cameras.main.width - 100, 10, '', { color: '#ffffff' });
-        this.setScore(0);
-        this.setLifes(2);
+        this.setScore(0, 0);
     }
 
     update(time, delta) {
@@ -41,55 +36,17 @@ export default class Level1 extends Phaser.Scene {
         this.physics.add.collider(obj1, obj2, cb);
     }
 
-    collidePlayerBall() {
-        this.setLifes(this.lifes - 1);
-        if (this.lifes === 0) {
-            this.updateObjects = [];
-            this.scene.restart();
-        }
-    }
-
-    addBall(x, y, direction, size) {
-        const ball = new Ball(
+    addBall() {
+        this.ball = new Ball(
             this,
-            x || this.cameras.main.width / 2,
-            y || this.cameras.main.height / 2,
-            direction,
-            size,
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2,
         );
-        this.collide(this.player, ball, this.collidePlayerBall.bind(this));
-        for (const b of this.balls) {
-            this.collide(ball, b);
-        }
-        this.balls.push(ball);
+        this.collide(this.player1, this.ball);
     }
 
-    destroyBall(ball) {
-        for (let i = 0; i < this.balls.length; i++) {
-            if (this.balls[i] === ball) {
-                this.balls.splice(i, 1);
-                break;
-            }
-        }
-        this.setScore(this.score + 1);
-        if (ball.size > 0.25) {
-            this.addBall(ball.x, ball.y, ball.direction, ball.size * 0.5);
-            this.addBall(ball.x, ball.y, -ball.direction, ball.size * 0.5);
-        }
-        ball.destroy();
-        if (!this.balls.length) {
-            // this.scene.stop();
-            // this.scene.start('Level1');
-        }
-    }
-
-    setScore(x) {
-        this.score = x;
-        this.scoreText.setText(`SCORE: ${x}`);
-    }
-
-    setLifes(x) {
-        this.lifes = x;
-        this.lifesText.setText(`LIFES: ${x}`);
+    setScore(x1, x2) {
+        this.score = [x1, x2];
+        this.scoreText.setText(`SCORE: ${x1} - ${x2}`);
     }
 }

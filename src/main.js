@@ -4,8 +4,8 @@ import Level1 from './scripts/Level1';
 // eslint-disable-next-line no-new
 new Phaser.Game({
     type: Phaser.AUTO,
-    width: 1024,
-    height: 896,
+    width: 800,
+    height: 600,
     pixelArt: true,
     parent: 'canvas',
     mode: Phaser.Scale.FIT,
